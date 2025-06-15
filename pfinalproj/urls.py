@@ -23,7 +23,9 @@ from concursliterari import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", views.helloworld)
+    path("", views.llistatcontes, name='llistatcontes'),
+    path('/<int:conte_id>/', views.conte, name='conte'),
+    path('resultatsactuals/',  views.resultats, name='resultatsactuals'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

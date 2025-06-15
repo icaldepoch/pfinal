@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultats per curs</title>
+    <link rel="stylesheet" href="{% static 'css/resultats.css' %}">
+</head>
+<body>
+    <h1>Resultats per curs</h1>
+
+    {% for curs, contes in resultats.items %}
+        <h2>{{ curs }}</h2>
+        {% if contes %}
+            <ol>
+                {% for conte in contes %}
+                    <li>
+                        <strong>{{ conte.titol }}</strong> — {{ conte.num_vots }} vot{{ conte.num_vots|pluralize:"s" }}
+                        (autor: {{ conte.autor.nom }})
+                    </li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <p>No hi ha contes per aquest curs.</p>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>

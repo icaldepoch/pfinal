@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Contes per curs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color:#571277;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #571277;
+            margin-top: 40px;
+        }
+
+        h3 {
+            color: #571277;
+        }
+
+        .conte-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .conte {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .conte:hover {
+            transform: scale(1.02);
+        }
+
+        .conte img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .conte h3 {
+            margin-top: 0;
+        }
+
+        .conte a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .boto-resultats {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background-color: #a634db48;
+            color: #280a36;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .boto-resultats:hover {
+            background-color: #a634db48;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contes agrupats per curs</h1>
+    <h3>Participa en el concurs! Llegeix, gaudeix i vota el teu conte preferit.</h3>
+
+    <a href="{% url 'resultatsactuals' %}" class="boto-resultats">Consulta aquí l'estat actual del concurs</a>
+
+
+    <form method="get">
+    <label for="curs">Filtra per curs:</label>
+    <select name="curs" id="curs" onchange="this.form.submit()">
+        <option value="">-- Tots els cursos --</option>
+        {% for codi, nom in cursos.items %}
+            <option value="{{ codi }}" {% if codi == curs_seleccionat %}selected{% endif %}>{{ nom }}</option>
+        {% endfor %}
+    </select>
+    </form>
+
+    {% for curs, contes in llistatcontes.items %}
+        <h2>{{ curs }}</h2>
+        {% if contes %}
+            <div class="conte-grid">
+                {% for conte in contes %}
+                    <a href="{% url 'conte' conte.id %}">
+                        <div class="conte">
+                            {% if conte.portada %}
+                                <img src="{{ conte.portada.url }}" alt="Portada del conte">
+                            {% endif %}
+                            <h3>{{ conte.titol }}</h3>
+                            <p><strong>Autor:</strong> {{ conte.autor.nom }}</p>
+                            <p>{{ conte.text|truncatewords:30 }}</p>
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="conte_id" value="{{ conte.id }}">
+                                <button type="submit" class="boto-votar">Votar</button>
+                            </form>
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No hi ha contes per aquest curs.</p>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>

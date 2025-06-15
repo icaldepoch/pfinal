@@ -33,14 +33,10 @@ class Conte(models.Model):
         return self.titol
 
 
-# class Vot(models.Model):
-#     conte = models.ForeignKey(Conte, on_delete=models.CASCADE, related_name='vots')
-#     ip_votant = models.GenericIPAddressField()
-#     data = models.DateTimeField(auto_now_add=True)
+class Vot(models.Model):
+    conte = models.ForeignKey(Conte, on_delete=models.CASCADE, related_name='vots')
+    data = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         unique_together = ('conte', 'ip_votant')  # Evita múltiples vots d'una mateixa IP
-
-#     def __str__(self):
-#         return f"Vot per {self.conte.titol}"
+    def __str__(self):
+        return f"Vot per {self.conte.titol}"
 
