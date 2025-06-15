@@ -75,7 +75,8 @@
     </style>
 </head>
 <body>
-    <h1>Contes agrupats per curs</h1>
+    <h1>Concurs literari Sant Jordi 2025</h1>
+    <h2>Institut Odissea</h2>
     <h3>Participa en el concurs! Llegeix, gaudeix i vota el teu conte preferit.</h3>
 
     <a href="{% url 'resultatsactuals' %}" class="boto-resultats">Consulta aquí l'estat actual del concurs</a>
@@ -104,7 +105,7 @@
                             <h3>{{ conte.titol }}</h3>
                             <p><strong>Autor:</strong> {{ conte.autor.nom }}</p>
                             <p>{{ conte.text|truncatewords:30 }}</p>
-                            
+
                             <form method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="conte_id" value="{{ conte.id }}">
